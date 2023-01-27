@@ -86,16 +86,44 @@ class _LandingScreenState extends State<LandingScreen> {
     return showModalBottomSheet(
       backgroundColor: Colors.grey[500],
       isScrollControlled: true,
+      elevation: 5,
       context: context,
       builder: (BuildContext context) {
         return Container(
             height: 600,
             child: Stack(
               children: [
-                TextFieldInput(
-                    textEditingController: TextEditingController(),
-                    hintText: "What would you like to name this study session?",
-                    textInputType: TextInputType.name),
+                Container(
+                  padding: const EdgeInsets.all(8.0),
+                  width: double.infinity,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 48,
+                        ),
+                        TextFieldInput(
+                            textEditingController: TextEditingController(),
+                            hintText: "Enter Study Session name",
+                            textInputType: TextInputType.name),
+                        const SizedBox(
+                          height: 48,
+                        ),
+                        TextFieldInput(
+                            textEditingController: TextEditingController(),
+                            hintText: " Whats your main goal for this Session?",
+                            textInputType: TextInputType.name),
+                        const SizedBox(
+                          height: 48,
+                        ),
+                        TextFieldInput(
+                            textEditingController: TextEditingController(),
+                            hintText: "Set timer intervals",
+                            textInputType: TextInputType.name)
+                      ],
+                    ),
+                  ),
+                ),
                 Align(
                   alignment: const Alignment(0.9, 0.9),
                   child: ElevatedButton(
