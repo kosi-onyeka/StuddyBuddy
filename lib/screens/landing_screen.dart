@@ -48,33 +48,7 @@ class _LandingScreenState extends State<LandingScreen> {
         child: Column(children: [
           InkWell(
             onTap: () {
-              showModalBottomSheet(
-                backgroundColor: Colors.grey[500],
-                isScrollControlled: true,
-                context: context,
-                builder: (BuildContext context) {
-                  return Container(
-                      height: 600,
-                      child: Stack(
-                        children: [
-                          TextFieldInput(
-                              textEditingController: TextEditingController(),
-                              hintText:
-                                  "What would you like to name this study session?",
-                              textInputType: TextInputType.name),
-                          Align(
-                            alignment: const Alignment(0.9, 0.9),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: primaryColorPalette),
-                              child: const Text('Lets learn!'),
-                              onPressed: () => Navigator.pop(context),
-                            ),
-                          )
-                        ],
-                      ));
-                },
-              );
+              newStudySessionSheet(context: context);
             },
             child: Container(
                 height: rowObjectSize,
@@ -105,6 +79,35 @@ class _LandingScreenState extends State<LandingScreen> {
           ),
         ]),
       ),
+    );
+  }
+
+  Future<dynamic> newStudySessionSheet({required BuildContext context}) {
+    return showModalBottomSheet(
+      backgroundColor: Colors.grey[500],
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+            height: 600,
+            child: Stack(
+              children: [
+                TextFieldInput(
+                    textEditingController: TextEditingController(),
+                    hintText: "What would you like to name this study session?",
+                    textInputType: TextInputType.name),
+                Align(
+                  alignment: const Alignment(0.9, 0.9),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryColorPalette),
+                    child: const Text('Lets learn!'),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                )
+              ],
+            ));
+      },
     );
   }
 }
