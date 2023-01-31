@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:studdy_bestie/resources/auth_methods.dart';
+import 'package:studdy_bestie/resources/stored_data.dart';
 import 'package:studdy_bestie/screens/login_screen.dart';
 import 'package:studdy_bestie/utils/colors.dart';
 import 'package:studdy_bestie/utils/dimensions.dart';
@@ -23,6 +25,23 @@ void logOutUser(BuildContext context) async {
 }
 
 class _LandingScreenState extends State<LandingScreen> {
+  String username = "";
+  @override
+  void initState() {
+    super.initState();
+    getUsername();
+  }
+
+  void getUsername() async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    setState(() {
+      username = (snap.data() as Map<String, dynamic>)['username'];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +62,7 @@ class _LandingScreenState extends State<LandingScreen> {
           )
         ],
       ),
-      drawer: LandingScreenDrawer(context: context),
+      drawer: LandingScreenDrawer(context: context, username: username),
       body: SafeArea(
         child: Column(children: [
           InkWell(
@@ -144,6 +163,7 @@ class LandingScreenDrawer extends StatefulWidget {
   const LandingScreenDrawer({
     Key? key,
     required BuildContext context,
+    required String username,
   }) : super(key: key);
 
   @override
@@ -152,6 +172,23 @@ class LandingScreenDrawer extends StatefulWidget {
 
 class _LandingScreenDrawerState extends State<LandingScreenDrawer> {
   final User? _user = FirebaseAuth.instance.currentUser;
+  String currUsername = "";
+  @override
+  void initState() {
+    super.initState();
+    getUsername();
+  }
+
+  void getUsername() async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    setState(() {
+      currUsername = (snap.data() as Map<String, dynamic>)['username'];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -159,7 +196,7 @@ class _LandingScreenDrawerState extends State<LandingScreenDrawer> {
         children: [
           UserAccountsDrawerHeader(
             //NEXTSTEP: pull username for data base and display in drawer
-            accountName: (const Text("Hi person!")),
+            accountName: (Text('Welcome ' '$currUsername' '!')),
             accountEmail: Text((_user?.email).toString()),
             currentAccountPicture:
                 const CircleAvatar(backgroundColor: Colors.black),
